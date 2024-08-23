@@ -5,6 +5,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
 import 'package:white_matrix/controller/CheckoutController.dart';
 import 'package:white_matrix/view/paymentscreen/paymentscreen.dart';
 
@@ -141,7 +142,7 @@ class CheckoutScreen extends StatelessWidget {
             textStyle: TextStyle(fontSize: 16),
           ),
         ),
-        SizedBox(width: 10), 
+        SizedBox(width: 10),
         ElevatedButton.icon(
           onPressed: () {
             _generateAndShareInvoice(context, controller);
@@ -167,7 +168,7 @@ class CheckoutScreen extends StatelessWidget {
     final filePath = '${downloadsDirectory!.path}/invoice_${DateTime.now().millisecondsSinceEpoch}.pdf';
     await pdfFile.copy(filePath);
 
-    // Display a dialog with share and open options
+    // Display a dialog with share, print, and open options
     await showDialog(
       context: context,
       builder: (context) {
@@ -185,9 +186,31 @@ class CheckoutScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
-                Share.share(invoiceContent, subject: 'Invoice');
+                Share.share(filePath, subject: 'Invoice');
               },
               child: Text('Share'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await Printing.layoutPdf(
+                  onLayout: (PdfPageFormat format) async {
+                    final pdf = pw.Document();
+                    pdf.addPage(
+                      pw.Page(
+                        pageFormat: format,
+                        build: (pw.Context context) {
+                          return pw.Center(
+                            child: pw.Text(invoiceContent),
+                          );
+                        },
+                      ),
+                    );
+                    return pdf.save();
+                  },
+                );
+                Navigator.of(context).pop();
+              },
+              child: Text('Print'),
             ),
             TextButton(
               onPressed: () {
@@ -221,23 +244,40 @@ class CheckoutScreen extends StatelessWidget {
   }
 
   String _generateInvoiceContent(CheckoutController controller) {
-    final transactionNumber = DateTime.now().millisecondsSinceEpoch;
-    final buffer = StringBuffer();
+  final transactionNumber = DateTime.now().millisecondsSinceEpoch;
+  final buffer = StringBuffer();
 
-    buffer.writeln('Invoice');
-    buffer.writeln('Transaction Number: $transactionNumber');
-    buffer.writeln('Name: ${controller.name}');
-    buffer.writeln('Address: ${controller.address}');
-    buffer.writeln('Phone: ${controller.phoneNumber}');
-    buffer.writeln('Pin Code: ${controller.pinCode}');
-    buffer.writeln('Cart Items:');
-
-    for (var item in controller.cartItems) {
-      buffer.writeln('${item.product.title} - \$${item.product.price.toStringAsFixed(2)} x ${item.quantity}');
-    }
-
-    buffer.writeln('Total: \$${controller.totalPrice.toStringAsFixed(2)}');
-
-    return buffer.toString();
+  
+  buffer.writeln('          INVOICE');
+ 
+  buffer.writeln('==============================');
+  buffer.writeln('');
+  
+  buffer.writeln('Transaction Number: $transactionNumber');
+  buffer.writeln('Date: ${DateTime.now().toLocal().toString()}');
+  buffer.writeln('');
+  
+  buffer.writeln('Customer Details:');
+  buffer.writeln('Name: ${controller.name}');
+  buffer.writeln('Address: ${controller.address}');
+  buffer.writeln('Phone: ${controller.phoneNumber}');
+  buffer.writeln('Pin Code: ${controller.pinCode}');
+  buffer.writeln('');
+  
+  
+  
+  for (var item in controller.cartItems) {
+    buffer.writeln('${item.product.title.padRight(20)} \$${item.product.price.toStringAsFixed(2).padLeft(8)} x ${item.quantity}');
   }
+  
+  buffer.writeln('------------------------------');
+  buffer.writeln('Total: ');
+  buffer.writeln('');
+  
+  buffer.writeln('==============================');
+  buffer.writeln('Thank you for your purchase!');
+ 
+
+  return buffer.toString();
+}
 }

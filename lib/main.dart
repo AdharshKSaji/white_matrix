@@ -7,6 +7,7 @@ import 'package:white_matrix/controller/CheckoutController.dart';
 import 'package:white_matrix/controller/cartcontroller.dart';
 import 'package:white_matrix/controller/favcontroller.dart';
 import 'package:white_matrix/controller/logincontroller.dart';
+import 'package:white_matrix/controller/ordercontroller.dart';
 import 'package:white_matrix/firebase_options.dart';
 import 'package:white_matrix/view/splashscreen/splashscreen.dart';
 
@@ -37,6 +38,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => FavoriteController(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => BookingController(),),
        ChangeNotifierProvider(create: (_) => CheckoutController()),
        ChangeNotifierProvider(create: (_) => Authcontroller())
       ],
