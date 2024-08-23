@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:white_matrix/view/homescreen/homescreen.dart';
-
 import 'package:white_matrix/view/loginscreen/loginscreen.dart';
+
+
+
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({super.key, this.islogged = false});
@@ -29,9 +32,11 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Image.asset(
-          "",
-          scale: 5.0,
+        child: Lottie.asset(
+          'assets/images/Animation - 1724427440298.json',
+          width: 200.0,  
+          height: 200.0, 
+          fit: BoxFit.fill,
         ),
       ),
     );

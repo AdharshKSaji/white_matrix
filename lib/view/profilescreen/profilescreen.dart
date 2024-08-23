@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:white_matrix/Adddatascreen/adddatascreen.dart';
+import 'package:white_matrix/view/favouritescreen/favoritescreen.dart';
 import 'package:white_matrix/view/loginscreen/loginscreen.dart';
-
+import 'package:white_matrix/view/cartscreen/cartscreen.dart'; 
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -10,9 +11,10 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.deepPurple,shadowColor:
+        Colors.deepPurpleAccent ,
         elevation: 0,
         title: Text(
           'Profile',
@@ -25,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Profile Avatar and Logout Button
+            
             Row(
               children: [
                 CircleAvatar(
@@ -46,6 +48,7 @@ class ProfileScreen extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
+                          color: Colors.orange,
                         ),
                       ),
                       Text(
@@ -58,7 +61,15 @@ class ProfileScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(width: 10),
+              ],
+            ),
+            SizedBox(height: 20),
+
+            // Action Buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Logout Button
                 ElevatedButton(
                   onPressed: () async {
                     await FirebaseAuth.instance.signOut();
@@ -75,30 +86,86 @@ class ProfileScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                   ),
-                  child: Text(
-                    'Logout',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.logout, color: Colors.white),
+                      SizedBox(width: 8),
+                      Text(
+                        'Logout',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // Favorites Button
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FavoriteScreen()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.pink,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.favorite, color: Colors.white),
+                      SizedBox(width: 8),
+                      Text(
+                        'Favorites',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // Cart Button
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CartScreen()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.shopping_cart, color: Colors.white),
+                      SizedBox(width: 8),
+                      Text(
+                        'Cart',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
+            
             SizedBox(height: 20),
-            // User Info Placeholder
-            Text(
-              "Manage your profile settings or view your activity here.",
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 14,
-              ),
-            ),
-            Spacer(),
-           
+            
+            // ADD PRODUCT Button
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddDataScreen(),));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddDataScreen()));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orange,

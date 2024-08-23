@@ -20,7 +20,7 @@ class ProductCard extends StatelessWidget {
       },
       child: Stack(
         children: [
-          Material(elevation: 3,
+          Material(elevation: 3,borderRadius: BorderRadius.circular(20),
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -35,10 +35,12 @@ class ProductCard extends StatelessWidget {
                   Center(
                       child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      product.image,
-                      height: 140,
-                      width: 145,fit: BoxFit.cover,
+                    child: Hero(tag: product.image,
+                      child: Image.network(
+                        product.image,
+                        height: 140,
+                        width: 145,fit: BoxFit.cover,
+                      ),
                     ),
                   )),
                   SizedBox(height: 5),

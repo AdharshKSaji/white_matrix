@@ -1,27 +1,51 @@
 import 'package:flutter/material.dart';
-
-class Product {
-  final String id;
-  final String name;
-  final double price;
-
-  Product({required this.id, required this.name, required this.price});
-}
-
+import 'package:white_matrix/model/cartmodel.dart';
+import 'package:white_matrix/model/productmodel.dart'; 
 class CheckoutController extends ChangeNotifier {
-  List<Product> cartItems = [];
+  String _name = '';
+  String _address = '';
+  String _phoneNumber = '';
+  String _pinCode = '';
+  List<CartModel> _cartItems = [];
+  String get name => _name;
+  String get address => _address;
+  String get phoneNumber => _phoneNumber;
+  String get pinCode => _pinCode;
+  List<CartModel> get cartItems => _cartItems;
 
-  void addItemToCart(Product product) {
-    cartItems.add(product);
+
+  void updateName(String name) {
+    _name = name;
     notifyListeners();
   }
 
-  void removeItemFromCart(Product product) {
-    cartItems.remove(product);
+  void updateAddress(String address) {
+    _address = address;
     notifyListeners();
   }
 
-  double get totalAmount {
-    return cartItems.fold<double>(0.0, (sum, item) => sum + item.price);
+  void updatePhoneNumber(String phoneNumber) {
+    _phoneNumber = phoneNumber;
+    notifyListeners();
+  }
+
+  void updatePinCode(String pinCode) {
+    _pinCode = pinCode;
+    notifyListeners();
+  }
+  void addItemToCart(CartModel item) {
+    _cartItems.add(item);
+    notifyListeners();
+  }
+  void removeItemFromCart(ProductModel product) {
+    _cartItems.removeWhere((item) => item.product == product);
+    notifyListeners();
+  }
+  double get totalPrice {
+    double total = 0.0;
+    for (var item in _cartItems) {
+      total += item.product.price * item.quantity;
+    }
+    return total;
   }
 }

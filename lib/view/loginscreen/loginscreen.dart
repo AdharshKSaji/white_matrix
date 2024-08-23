@@ -20,7 +20,7 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  "assets/images/login.svg",
+                  "assets/images/undraw_mobile_login_re_9ntv.jpg",
                   height: 150,
                 ),
                 SizedBox(height: 20),
@@ -36,7 +36,7 @@ class LoginScreen extends StatelessWidget {
                   controller: _controller.phoneNumberController,
                   decoration: InputDecoration(
                     labelText: 'Enter your phone number',
-                    hintText: '0000000000',
+                    hintText: '',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),

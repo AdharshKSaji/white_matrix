@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:white_matrix/controller/favcontroller.dart';
 import 'package:white_matrix/controller/cartcontroller.dart';
 import 'package:white_matrix/model/productmodel.dart';
-
 import 'package:white_matrix/view/cartscreen/CartScreen.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -14,7 +13,7 @@ class ProductDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final favoriteProvider = Provider.of<FavoriteController>(context);
-    final cartProvider = Provider.of<Cartcontroller>(context);
+    final cartProvider = Provider.of<CartController>(context); // Corrected typo
 
     return Scaffold(
       body: Stack(
@@ -52,17 +51,6 @@ class ProductDetailScreen extends StatelessWidget {
                       },
                     ),
                     const Spacer(),
-                    // Uncomment if you want to display a cart icon here
-                    // IconButton(
-                    //   icon: const Icon(Icons.shopping_cart, color: Colors.black),
-                    //   onPressed: () {
-                    //     cartProvider.addCart(product);
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (context) => CartScreen()),
-                    //     );
-                    //   },
-                    // ),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -72,11 +60,13 @@ class ProductDetailScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Image.network(
-                        product.image,
-                        height: 250,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
+                      child: Hero(tag: product.image,
+                        child: Image.network(
+                          product.image,
+                          height: 250,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
@@ -107,10 +97,10 @@ class ProductDetailScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                Divider(),
-                Text(
+                const Divider(),
+                const Text(
                   "Seller:",
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     color: Colors.black,
                   ),
@@ -129,15 +119,15 @@ class ProductDetailScreen extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          cartProvider.Addcart(product);  
+                          
+                          cartProvider.addToCart(product, qty: 1); 
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => CartScreen(),
+                              builder: (context) =>  CartScreen(),
                             ),
                           );
                         },
-                        child: const Text('Buy Now'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -145,6 +135,7 @@ class ProductDetailScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
+                        child: const Text('Buy Now'),
                       ),
                     ),
                   ],

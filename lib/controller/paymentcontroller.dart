@@ -1,5 +1,5 @@
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-import 'package:flutter/material.dart';
+
 
 class PaymentController {
   final Razorpay _razorpay = Razorpay();
@@ -13,7 +13,7 @@ class PaymentController {
   void initiatePayment(double amount) {
     var options = {
       'key': 'rzp_live_ILgsfZCZoFIKMb',
-      'amount': amount * 100, // Amount in paise
+      'amount': amount * 100, 
       'name': 'My Shoppy',
       'description': 'Car Rental Services',
       'retry': {'enabled': true, 'max_count': 1},
@@ -31,15 +31,15 @@ class PaymentController {
   }
 
   void _handlePaymentErrorResponse(PaymentFailureResponse response) {
-    // Handle payment error
+   
   }
 
   void _handlePaymentSuccessResponse(PaymentSuccessResponse response) {
-    // Handle payment success
+   
   }
 
   void _handleExternalWalletSelected(ExternalWalletResponse response) {
-    // Handle external wallet selection
+ 
   }
 
   void dispose() {

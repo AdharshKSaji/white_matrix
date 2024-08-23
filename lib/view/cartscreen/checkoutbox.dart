@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:white_matrix/controller/cartcontroller.dart';
 import 'package:white_matrix/view/checkoutscreen/checkoutscreen.dart';
 
+
 class Checkoutbox extends StatelessWidget {
   Checkoutbox({
     super.key,
@@ -9,7 +10,7 @@ class Checkoutbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Cartcontroller.of(context);
+    final provider = CartController.of(context);
     return Container(
       height: 180,
       width: double.infinity,
@@ -47,11 +48,11 @@ class Checkoutbox extends StatelessWidget {
           SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => CheckoutScreen()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CheckoutScreen()));
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
+              backgroundColor: Colors.black,
               minimumSize: Size(double.infinity, 55),
             ),
             child: Text(

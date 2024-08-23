@@ -33,7 +33,7 @@ class OtpVerificationScreen extends StatelessWidget {
                   Column(
                     children: [
                       Image.asset(
-                        "assets/images/otp.svg",
+                        "assets/images/undraw_verified_re_4io7.jpg",
                         height: 150,
                       ),
                       const SizedBox(height: 20.0),
@@ -170,7 +170,7 @@ class OtpVerificationScreen extends StatelessWidget {
                 alignment: Alignment.center,
                 color: Colors.white,
                 child: const Text(
-                  "Congratulations!\nYou have verified the OTP!",
+                  "Congratulations!\nYou have Won RS 0 !",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),

@@ -15,6 +15,7 @@ class _PaymentState extends State<Payment> {
   @override
   Widget build(BuildContext context) {
     double amount = context.read<BookingController>().totalPrice();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -43,105 +44,70 @@ class _PaymentState extends State<Payment> {
               ],
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildTotalAmountRow(amount),
-                Divider(),
+               
+                Image.asset(
+                  'assets/images/undraw_mobile_pay_re_sjb8.jpg', 
+                  height: 150, 
+                  fit: BoxFit.cover,
+                ),
+                SizedBox(height: 20), 
+                
                 SizedBox(height: 20),
-                _buildProceedToPayButton(context, amount),
+                _buildPaymentOptions(context, amount),
               ],
             ),
           ),
           SizedBox(height: 60),
-          _buildCodInfoText(),
-          SizedBox(height: 30),
-          _buildSkipPaymentButton(context),
         ],
       ),
       backgroundColor: Colors.grey[100],
     );
   }
 
-  Widget _buildTotalAmountRow(double amount) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  
+  Widget _buildPaymentOptions(BuildContext context, double amount) {
+    return Column(
       children: [
-        Text(
-          "Total",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.deepPurple,
+        _buildOptionButton(
+          context,
+          "Cash on Delivery",
+          Colors.green,
+          () => Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+            (route) => false,
           ),
         ),
-        Text(
-          "\₹${amount.toStringAsFixed(2)}",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.deepPurple,
-          ),
+        SizedBox(height: 20),
+        _buildOptionButton(
+          context,
+          "Online Payment",
+          Colors.deepPurple,
+          () => _initiatePayment(amount),
         ),
       ],
     );
   }
 
-  Widget _buildProceedToPayButton(BuildContext context, double amount) {
-    return ElevatedButton.icon(
-      onPressed: () {
-        _initiatePayment(amount);
-      },
-      icon: Icon(Icons.payment, color: Colors.white),
-      label: Text(
-        "Proceed to Pay,",
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-      ),
+  Widget _buildOptionButton(
+    BuildContext context,
+    String text,
+    Color color,
+    VoidCallback onPressed,
+  ) {
+    return ElevatedButton(
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: color,
         minimumSize: Size(double.infinity, 55),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
         padding: EdgeInsets.symmetric(vertical: 15),
       ),
-    );
-  }
-
-  Widget _buildCodInfoText() {
-    return Column(
-      children: [
-        Text(
-          "Cash on Delivery (COD) is available.",
-          style: TextStyle(fontSize: 16, color: Colors.black54),
-        ),
-        SizedBox(height: 10),
-        Text(
-          "Press 'Skip' to return to the homepage.",
-          style: TextStyle(fontSize: 16, color: Colors.black54),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSkipPaymentButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
-          (route) => false,
-        );
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.redAccent,
-        minimumSize: Size(double.infinity, 35),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        padding: EdgeInsets.symmetric(vertical: 15),
-      ),
       child: Text(
-        "Skip Payment,",
+        text,
         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
       ),
     );
@@ -157,7 +123,7 @@ class _PaymentState extends State<Payment> {
       'retry': {'enabled': true, 'max_count': 1},
       'send_sms_hash': true,
       'prefill': {
-        'contact': '919562106384',
+        'contact': '919847452792',
         'email': 'adharshksaji001@com',
         'place': 'Kochi, Kerala'
       },

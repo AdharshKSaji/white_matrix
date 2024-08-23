@@ -2,11 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:white_matrix/model/productmodel.dart';
-import 'package:white_matrix/view/favouritescreen/favoritescreen.dart';
+import 'package:white_matrix/view/SearchScreen/SearchScreen.dart';
 import 'package:white_matrix/view/homescreen/widgets/productcard.dart';
 import 'package:white_matrix/view/profilescreen/profilescreen.dart';
-
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,9 +20,15 @@ class _HomeScreenState extends State<HomeScreen> {
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvVfsF70vpPjcX4ZfEb8iQUqtuxxoRYvUkW1h2oc-A4MJ9BFzx2Cn0zxc3Sb19YlL8npw&usqp=CAU',
   ];
 
+  final List<String> bigSaleImages = [
+    'https://images.pexels.com/photos/125779/pexels-photo-125779.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/3825517/pexels-photo-3825517.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=600',
+    'https://images.pexels.com/photos/1656379/pexels-photo-1656379.jpeg?auto=compress&cs=tinysrgb&w=600',
+  ];
+
   var collectionRef = FirebaseFirestore.instance.collection("products");
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.blue, Colors.lightBlueAccent],
+              colors: [Colors.deepPurple, Colors.deepPurpleAccent],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -65,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
             actions: [
               IconButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SearchBar()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SearchBarApp()));
                 },
                 icon: Icon(
                   size: 38,
@@ -95,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Carousel Slider
                   CarouselSlider(
                     options: CarouselOptions(
                       height: 200,
@@ -162,7 +167,54 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     }).toList(),
                   ),
+                 SizedBox(height: 20),
+
+RichText(
+  text: TextSpan(
+    children: [
+      TextSpan(
+        text: "Big Sale ",
+        style: TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.w800,
+          color: Colors.black, 
+        ),
+      ),
+      TextSpan(
+        text: "Flat 50% Off",
+        style: TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.w800,
+          color: Colors.red, 
+        ),
+      ),
+    ],
+  ),
+),
+                  SizedBox(height: 10),
+                  SizedBox(
+                    height: 150, // Adjust height as needed
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: bigSaleImages.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          width: 150, // Adjust width as needed
+                          margin: EdgeInsets.only(right: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: DecorationImage(
+                              image: NetworkImage(bigSaleImages[index]),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                   SizedBox(height: 20),
+
+                  // Products Section
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -198,7 +250,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) {
                       var map = snapshot.data!.docs[index];
                       return ProductCard(
-                        product: ProductModel.fromMap(map.data()),
+                        product: ProductModel(
+                          
+                          title: map['title'],
+                          description: map['description'],
+                          image: map['image'],
+                          review: map['review'],
+                          seller: map['seller'],
+                          price: map['price'],
+                          rate: map['rate'],
+                          quantity: map['quantity'],
+                        ),
                       );
                     },
                   ),
@@ -208,23 +270,6 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       ),
-      bottomNavigationBar:BottomNavigationBar(items: [
-        BottomNavigationBarItem(icon: IconButton(onPressed: () {
-          
-        }, icon: Icon(Icons.home,color: Colors.black)),label: ""),
-         BottomNavigationBarItem(icon: IconButton(onPressed: () {
-          
-        }, icon: Icon(Icons.search,color: Colors.black,)),label: ""),
-         BottomNavigationBarItem(icon: IconButton(onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => FavoriteScreen(),));
-          
-        }, icon: Icon(Icons.favorite,color: Colors.black)),label: ""),
-         BottomNavigationBarItem(icon: IconButton(onPressed: () {
-          
-        }, icon: Icon(Icons.shopping_cart,color: Colors.black)),label: ""),
-        
-        
-      ])
     );
   }
 }

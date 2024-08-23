@@ -13,17 +13,16 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
-    final provider = Cartcontroller.of(context);
+    final provider = CartController.of(context);
     final finalList = provider.cart;
-
-    productQuantity(IconData icon, int index) {
+    Widget productQuantity(IconData icon, int index) {
       return GestureDetector(
         onTap: () {
           setState(() {
             if (icon == Icons.add) {
-              provider.incrementQtn(index);
+              provider.incrementQuantity(index);
             } else {
-              provider.decrementQtn(index);
+              provider.decrementQuantity(index);
             }
           });
         },
@@ -38,21 +37,21 @@ class _CartScreenState extends State<CartScreen> {
       bottomSheet: Checkoutbox(),
       appBar: AppBar(
         title: Text(
-          "My Cart",
+          " Cart",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: ColorConstants.primaryBlack,
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.deepPurple,
         elevation: 0,
       ),
       body: SafeArea(
         child: ListView.builder(
           itemCount: finalList.length,
           itemBuilder: (context, index) {
-            final cartItems = finalList[index];
+            final cartItem = finalList[index];
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Card(
@@ -71,7 +70,7 @@ class _CartScreenState extends State<CartScreen> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           image: DecorationImage(
-                            image: NetworkImage(cartItems.image),
+                            image: NetworkImage(cartItem.product.image),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -82,7 +81,7 @@ class _CartScreenState extends State<CartScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              cartItems.title,
+                              cartItem.product.title,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -91,7 +90,7 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              "\₹${cartItems.price.toStringAsFixed(2)}",
+                              "\₹${cartItem.product.price.toStringAsFixed(2)}",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -105,7 +104,7 @@ class _CartScreenState extends State<CartScreen> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                                   child: Text(
-                                    "${cartItems.quantity}",
+                                    "${cartItem.qty}", 
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -125,7 +124,8 @@ class _CartScreenState extends State<CartScreen> {
                           IconButton(
                             onPressed: () {
                               setState(() {
-                                finalList.removeAt(index);
+                                provider.cart.removeAt(index);  
+                      
                               });
                             },
                             icon: Icon(
