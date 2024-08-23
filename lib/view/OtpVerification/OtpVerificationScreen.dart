@@ -7,12 +7,10 @@ import 'package:white_matrix/view/homescreen/homescreen.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
   final String phoneNumber;
-  final String verificationId;
 
   const OtpVerificationScreen({
     super.key,
     required this.phoneNumber,
-    required this.verificationId,
   });
 
   @override
@@ -20,7 +18,7 @@ class OtpVerificationScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) {
         final controller = OtpVerificationController();
-        controller.setVerificationId(verificationId);
+        
         return controller;
       },
       child: Consumer<OtpVerificationController>(
@@ -60,7 +58,7 @@ class OtpVerificationScreen extends StatelessWidget {
                         controller: controller.otpController,
                         onChanged: controller.updateOtp,
                         onCompleted: (pin) async {
-                          await controller.verifyOtp();
+                          await controller.verifyOtp(context);
                           if (controller.errorMessage.isEmpty) {
                             _showScratchCardDialog(context);
                           }
@@ -121,7 +119,7 @@ class OtpVerificationScreen extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () async {
-                            await controller.verifyOtp();
+                            await controller.verifyOtp(context);
                             if (controller.errorMessage.isEmpty) {
                               _showScratchCardDialog(context);
                             }

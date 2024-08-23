@@ -8,6 +8,7 @@ class Authcontroller extends ChangeNotifier {
   String? _verificationId;
 
   LoginUser? get user => _user;
+  String? get verificationId => _verificationId;
 
   final firebase_auth.FirebaseAuth _firebaseAuth =
       firebase_auth.FirebaseAuth.instance;

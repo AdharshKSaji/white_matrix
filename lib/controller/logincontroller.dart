@@ -9,15 +9,14 @@ class LoginController extends ChangeNotifier {
   final TextEditingController phoneNumberController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  void sendOtp(BuildContext context) {
+  Future<void> sendOtp(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       final authViewModel = Provider.of<Authcontroller>(context, listen: false);
       final phoneNumber = '+91${phoneNumberController.text}';
-      authViewModel.sendOtp(phoneNumber);
+      await authViewModel.sendOtp(phoneNumber);
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => OtpVerificationScreen(
           phoneNumber: phoneNumber,
-          verificationId: "",
         ),
       ));
     }

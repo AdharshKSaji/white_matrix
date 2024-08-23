@@ -5,4 +5,6 @@ class CartModel {
   ProductModel product;
   int qty;
   CartModel({required this.product, this.qty = 1});
+
+  get quantity => null;
 }

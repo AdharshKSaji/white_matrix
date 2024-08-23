@@ -47,8 +47,8 @@ class Checkoutbox extends StatelessWidget {
           SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CheckoutScreen()));
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => CheckoutScreen()));
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue,

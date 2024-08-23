@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:white_matrix/controller/AuthController.dart';
 
 class OtpVerificationController extends ChangeNotifier {
   final TextEditingController otpController = TextEditingController();
@@ -8,7 +12,7 @@ class OtpVerificationController extends ChangeNotifier {
 
   String get errorMessage => _errorMessage;
 
-  void setVerificationId(String verificationId) {
+  void _setVerificationId(String verificationId) {
     _verificationId = verificationId;
   }
 
@@ -18,16 +22,20 @@ class OtpVerificationController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> verifyOtp() async {
+  Future<void> verifyOtp(BuildContext context) async {
+    _verificationId ??= context.read<Authcontroller>().verificationId;
+    _errorMessage ='';
+    notifyListeners();
     if (_verificationId == null) {
       _errorMessage = 'Verification ID not set.';
+      print(_errorMessage);
       notifyListeners();
       return;
     }
 
     try {
-      print('Verification ID: $_verificationId');
-      print('Entered OTP: ${otpController.text}');
+      log('Verification ID: $_verificationId');
+      log('Entered OTP: ${otpController.text}');
 
       final credential = PhoneAuthProvider.credential(
         verificationId: _verificationId!,
@@ -39,7 +47,7 @@ class OtpVerificationController extends ChangeNotifier {
       _errorMessage = '';
       notifyListeners();
     } catch (e) {
-      print('Verification failed: $e');
+      log('Verification failed: $e');
       _errorMessage = 'Verification failed. Please try again.';
       notifyListeners();
     }
@@ -60,14 +68,14 @@ class OtpVerificationController extends ChangeNotifier {
       };
 
       final PhoneCodeSent codeSent = (String verificationId, int? resendToken) {
-        setVerificationId(verificationId);
+        _setVerificationId(verificationId);
         _errorMessage = 'OTP sent to $phoneNumber';
         notifyListeners();
       };
 
       final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
           (String verificationId) {
-        setVerificationId(verificationId);
+        _setVerificationId(verificationId);
       };
 
       await FirebaseAuth.instance.verifyPhoneNumber(

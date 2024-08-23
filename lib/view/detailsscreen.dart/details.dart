@@ -129,7 +129,7 @@ class ProductDetailScreen extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          cartProvider.Addcart(product);  // Add product to cart
+                          cartProvider.Addcart(product);  
                           Navigator.push(
                             context,
                             MaterialPageRoute(
