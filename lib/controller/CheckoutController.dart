@@ -1,78 +1,83 @@
-import 'dart:convert'; // For json encoding
-import 'dart:io'; // For file operations
-import 'package:flutter/foundation.dart';
-import 'package:path_provider/path_provider.dart'; // For getting the file path
-import 'package:pdf/pdf.dart'; // For PDF generation
-import 'package:pdf/widgets.dart' as pw; // For PDF widgets
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+
+class Product {
+  final String id;
+  final String name;
+  final double price;
+
+  Product({required this.id, required this.name, required this.price});
+}
 
 class CheckoutController extends ChangeNotifier {
-  String _name = '';
-  String _address = '';
-  String _phoneNumber = '';
-  String _pinCode = '';
-  List<String> _cartItems = [];
+  String name = '';
+  String address = '';
+  String phoneNumber = '';
+  String pinCode = '';
+  List<Product> cartItems = [];
 
-  String get name => _name;
-  String get address => _address;
-  String get phoneNumber => _phoneNumber;
-  String get pinCode => _pinCode;
-  List<String> get cartItems => _cartItems;
-
-  void updateName(String value) {
-    _name = value;
+  void updateName(String newName) {
+    name = newName;
     notifyListeners();
   }
 
-  void updateAddress(String value) {
-    _address = value;
+  void updateAddress(String newAddress) {
+    address = newAddress;
     notifyListeners();
   }
 
-  void updatePhoneNumber(String value) {
-    _phoneNumber = value;
+  void updatePhoneNumber(String newPhoneNumber) {
+    phoneNumber = newPhoneNumber;
     notifyListeners();
   }
 
-  void updatePinCode(String value) {
-    _pinCode = value;
+  void updatePinCode(String newPinCode) {
+    pinCode = newPinCode;
     notifyListeners();
   }
 
-  void addItemToCart(String item) {
-    _cartItems.add(item);
+  void addItemToCart(Product product) {
+    cartItems.add(product);
     notifyListeners();
   }
 
-  void removeItemFromCart(String item) {
-    _cartItems.remove(item);
+  void removeItemFromCart(Product product) {
+    cartItems.remove(product);
     notifyListeners();
   }
 
-  Future<void> checkout() async {
-    // Generate invoice
-    final invoiceFile = await _generateInvoice();
-    // You can now save or use this file as needed
-    print('Invoice saved at: ${invoiceFile.path}');
-    // Implement your checkout logic
-  }
-
-  Future<File> _generateInvoice() async {
+  Future<void> generateInvoice(BuildContext context) async {
     final pdf = pw.Document();
-    
+
     pdf.addPage(
       pw.Page(
         build: (pw.Context context) {
           return pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text('Invoice'),
-              pw.Text('Name: $_name'),
-              pw.Text('Address: $_address'),
-              pw.Text('Phone Number: $_phoneNumber'),
-              pw.Text('Pin Code: $_pinCode'),
-              pw.Text('Cart Items:'),
-              pw.Column(
-                children: _cartItems.map((item) => pw.Text(item)).toList(),
+              pw.Text('Invoice', style: pw.TextStyle(fontSize: 24)),
+              pw.SizedBox(height: 20),
+              pw.Text('Name: $name'),
+              pw.Text('Address: $address'),
+              pw.Text('Phone Number: $phoneNumber'),
+              pw.Text('Pin Code: $pinCode'),
+              pw.SizedBox(height: 20),
+              pw.Text('Cart Items:', style: pw.TextStyle(fontSize: 18)),
+              pw.SizedBox(height: 10),
+              ...cartItems.map((product) => pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Text('ID: ${product.id}, Name: ${product.name}'),
+                      pw.Text('Price: \$${product.price.toStringAsFixed(2)}'),
+                    ],
+                  )),
+              pw.SizedBox(height: 20),
+              pw.Text(
+                'Total: \$${cartItems.fold<double>(0.0, (sum, item) => sum + item.price).toStringAsFixed(2)}',
+                style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold),
               ),
             ],
           );
@@ -80,9 +85,23 @@ class CheckoutController extends ChangeNotifier {
       ),
     );
 
-    final output = await getTemporaryDirectory();
-    final file = File('${output.path}/invoice.pdf');
-    await file.writeAsBytes(await pdf.save());
-    return file;
+    try {
+      // Get the application documents directory
+      final output = await getApplicationDocumentsDirectory();
+      final file = File("${output.path}/invoice.pdf");
+
+      // Write the PDF to the file
+      await file.writeAsBytes(await pdf.save());
+
+      // Notify the user
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Invoice successfully generated at ${file.path}')),
+      );
+    } catch (e) {
+      // Handle errors
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to generate invoice: $e')),
+      );
+    }
   }
 }

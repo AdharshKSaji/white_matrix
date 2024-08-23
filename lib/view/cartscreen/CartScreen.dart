@@ -3,7 +3,6 @@ import 'package:white_matrix/constants/colorconstants.dart/colorconstants.dart';
 import 'package:white_matrix/controller/cartcontroller.dart';
 import 'package:white_matrix/view/cartscreen/checkoutbox.dart';
 
-
 class CartScreen extends StatefulWidget {
   CartScreen({super.key});
 
@@ -21,9 +20,11 @@ class _CartScreenState extends State<CartScreen> {
       return GestureDetector(
         onTap: () {
           setState(() {
-            icon == Icons.add
-                ? provider.incrementQtn(index)
-                : provider.decrementQtn(index);
+            if (icon == Icons.add) {
+              provider.incrementQtn(index);
+            } else {
+              provider.decrementQtn(index);
+            }
           });
         },
         child: Icon(
@@ -53,8 +54,7 @@ class _CartScreenState extends State<CartScreen> {
           itemBuilder: (context, index) {
             final cartItems = finalList[index];
             return Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
@@ -91,7 +91,7 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              "\₹${cartItems.price}",
+                              "\₹${cartItems.price.toStringAsFixed(2)}",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -103,8 +103,7 @@ class _CartScreenState extends State<CartScreen> {
                               children: [
                                 productQuantity(Icons.remove, index),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12.0),
+                                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                                   child: Text(
                                     "${cartItems.quantity}",
                                     style: TextStyle(
@@ -126,7 +125,6 @@ class _CartScreenState extends State<CartScreen> {
                           IconButton(
                             onPressed: () {
                               setState(() {
-                                finalList[index].quantity = 1;
                                 finalList.removeAt(index);
                               });
                             },
