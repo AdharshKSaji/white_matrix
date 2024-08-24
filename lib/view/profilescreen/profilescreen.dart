@@ -12,7 +12,11 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      appBar: AppBar(
+      appBar: AppBar(leading:  IconButton(
+                      icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },),
         backgroundColor: Colors.deepPurple,shadowColor:
         Colors.deepPurpleAccent ,
         elevation: 0,

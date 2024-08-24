@@ -17,9 +17,13 @@ class _PaymentState extends State<Payment> {
     double amount = context.read<BookingController>().totalPrice();
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(leading:  IconButton(
+                      icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },),
         title: Text(
-          'Payment',
+          'Book Here',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.deepPurple,
@@ -69,16 +73,25 @@ class _PaymentState extends State<Payment> {
   Widget _buildPaymentOptions(BuildContext context, double amount) {
     return Column(
       children: [
-        _buildOptionButton(
-          context,
-          "Cash on Delivery",
-          Colors.green,
-          () => Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-            (route) => false,
-          ),
-        ),
+     _buildOptionButton(
+  context,
+  "Cash on Delivery",
+  Colors.green,
+  () {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => HomeScreen()),
+      (route) => false,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Booked Successfully!"),
+        duration: Duration(seconds: 3), 
+        backgroundColor: Colors.green,
+      ),
+    );
+  },
+),
         SizedBox(height: 20),
         _buildOptionButton(
           context,

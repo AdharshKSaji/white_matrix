@@ -35,7 +35,11 @@ class _CartScreenState extends State<CartScreen> {
 
     return Scaffold(
       bottomSheet: Checkoutbox(),
-      appBar: AppBar(
+      appBar: AppBar(leading:  IconButton(
+                      icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },),
         title: Text(
           " Cart",
           style: TextStyle(

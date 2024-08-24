@@ -15,7 +15,11 @@ class CheckoutScreen extends StatelessWidget {
     return ChangeNotifierProvider<CheckoutController>(
       create: (_) => CheckoutController(),
       child: Scaffold(
-        appBar: AppBar(
+        appBar: AppBar(leading:  IconButton(
+                      icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },),
           title: Text('Checkout', style: TextStyle(color: Colors.white)),
           backgroundColor: Colors.deepPurple,
           centerTitle: true,
