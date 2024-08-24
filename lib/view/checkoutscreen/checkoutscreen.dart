@@ -15,11 +15,13 @@ class CheckoutScreen extends StatelessWidget {
     return ChangeNotifierProvider<CheckoutController>(
       create: (_) => CheckoutController(),
       child: Scaffold(
-        appBar: AppBar(leading:  IconButton(
-                      icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
           title: Text('Checkout', style: TextStyle(color: Colors.white)),
           backgroundColor: Colors.deepPurple,
           centerTitle: true,
@@ -34,32 +36,24 @@ class CheckoutScreen extends StatelessWidget {
                   children: [
                     _buildTextField(
                       label: 'Name',
-                      initialValue: controller.name,
-                      icon: Icons.person,
-                      onChanged: (value) => controller.updateName(value),
+                      controller: controller.nameController,
                     ),
                     SizedBox(height: 10),
                     _buildTextField(
                       label: 'Delivery Address',
-                      initialValue: controller.address,
-                      icon: Icons.location_on,
-                      onChanged: (value) => controller.updateAddress(value),
+                      controller: controller.addressController,
                     ),
                     SizedBox(height: 10),
                     _buildTextField(
                       label: 'Phone Number',
-                      initialValue: controller.phoneNumber,
-                      icon: Icons.phone,
+                      controller: controller.phoneNumberController,
                       keyboardType: TextInputType.phone,
-                      onChanged: (value) => controller.updatePhoneNumber(value),
                     ),
                     SizedBox(height: 10),
                     _buildTextField(
                       label: 'Pin Code',
-                      initialValue: controller.pinCode,
-                      icon: Icons.lock,
+                      controller: controller.pinCodeController,
                       keyboardType: TextInputType.number,
-                      onChanged: (value) => controller.updatePinCode(value),
                     ),
                     SizedBox(height: 10),
                     _buildCartItemsList(controller),
@@ -77,17 +71,15 @@ class CheckoutScreen extends StatelessWidget {
 
   Widget _buildTextField({
     required String label,
-    required String initialValue,
-    required IconData icon,
-    required ValueChanged<String> onChanged,
+    required TextEditingController controller,
     TextInputType keyboardType = TextInputType.text,
   }) {
     return TextField(
-      controller: TextEditingController(text: initialValue),
+      controller: controller,
       keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: Icon(icon, color: Colors.deepPurple),
+        
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Colors.deepPurple),
@@ -97,7 +89,6 @@ class CheckoutScreen extends StatelessWidget {
           borderSide: BorderSide(color: Colors.deepPurple, width: 2),
         ),
       ),
-      onChanged: onChanged,
     );
   }
 
@@ -248,40 +239,30 @@ class CheckoutScreen extends StatelessWidget {
   }
 
   String _generateInvoiceContent(CheckoutController controller) {
-  final transactionNumber = DateTime.now().millisecondsSinceEpoch;
-  final buffer = StringBuffer();
+    final transactionNumber = DateTime.now().millisecondsSinceEpoch;
+    final buffer = StringBuffer();
 
-  
-  buffer.writeln('          INVOICE');
- 
-  buffer.writeln('==============================');
-  buffer.writeln('');
-  
-  buffer.writeln('Transaction Number: $transactionNumber');
-  buffer.writeln('Date: ${DateTime.now().toLocal().toString()}');
-  buffer.writeln('');
-  
-  buffer.writeln('Customer Details:');
-  buffer.writeln('Name: ${controller.name}');
-  buffer.writeln('Address: ${controller.address}');
-  buffer.writeln('Phone: ${controller.phoneNumber}');
-  buffer.writeln('Pin Code: ${controller.pinCode}');
-  buffer.writeln('');
-  
-  
-  
-  for (var item in controller.cartItems) {
-    buffer.writeln('${item.product.title.padRight(20)} \$${item.product.price.toStringAsFixed(2).padLeft(8)} x ${item.quantity}');
+    buffer.writeln('          INVOICE');
+    buffer.writeln('==============================');
+    buffer.writeln('');
+    buffer.writeln('Transaction Number: $transactionNumber');
+    buffer.writeln('Date: ${DateTime.now().toLocal().toString()}');
+    buffer.writeln('');
+    buffer.writeln('Customer Details:');
+    buffer.writeln('Name: ${controller.name}');
+    buffer.writeln('Address: ${controller.address}');
+    buffer.writeln('Phone: ${controller.phoneNumber}');
+    buffer.writeln('Pin Code: ${controller.pinCode}');
+    buffer.writeln('');
+    for (var item in controller.cartItems) {
+      buffer.writeln('${item.product.title.padRight(20)} \$${item.product.price.toStringAsFixed(2).padLeft(8)} x ${item.quantity}');
+    }
+    buffer.writeln('------------------------------');
+    buffer.writeln('Total: ${controller.totalPrice.toStringAsFixed(2)}');
+    buffer.writeln('');
+    buffer.writeln('==============================');
+    buffer.writeln('Thank you for your purchase!');
+
+    return buffer.toString();
   }
-  
-  buffer.writeln('------------------------------');
-  buffer.writeln('Total: ');
-  buffer.writeln('');
-  
-  buffer.writeln('==============================');
-  buffer.writeln('Thank you for your purchase!');
- 
-
-  return buffer.toString();
-}
 }
