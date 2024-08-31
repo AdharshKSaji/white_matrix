@@ -10,14 +10,25 @@ class CartController extends ChangeNotifier {
 
   void addToCart(ProductModel product, {required int qty, bool isScratched = false}) {
    
-    final newCartItem = CartModel(
-      product: product,
-      qty: qty,
-      price: isScratched ? 0.0 : product.originalPrice, 
-    );
+    final existingItemIndex = _cartList.indexWhere((item) => item.product.title == product.title);
 
-  
-    _cartList.add(newCartItem);
+    if (existingItemIndex != -1) {
+     
+      if (_cartList[existingItemIndex].qty + qty > 1) {
+       
+        _cartList[existingItemIndex].qty = 1; 
+      }
+      
+      _cartList[existingItemIndex].price = isScratched ? 0.0 : product.originalPrice;
+    } else {
+      
+      final newCartItem = CartModel(
+        product: product,
+        qty: 1, 
+        price: isScratched ? 0.0 : product.originalPrice,
+      );
+      _cartList.add(newCartItem);
+    }
 
     notifyListeners();
   }
@@ -51,4 +62,3 @@ class CartController extends ChangeNotifier {
     return Provider.of<CartController>(context, listen: listen);
   }
 }
-
