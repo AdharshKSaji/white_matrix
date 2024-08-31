@@ -4,6 +4,7 @@ import 'package:white_matrix/controller/favcontroller.dart';
 import 'package:white_matrix/controller/cartcontroller.dart';
 import 'package:white_matrix/model/productmodel.dart';
 import 'package:white_matrix/view/cartscreen/CartScreen.dart';
+import 'package:white_matrix/view/checkoutscreen/checkoutscreen.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final ProductModel product;
@@ -82,7 +83,7 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "₹${product.price.toString()}",
+                  "₹${product.originalPrice.toString()}",
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -114,30 +115,61 @@ class ProductDetailScreen extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                Row(
+                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          
-                          cartProvider.addToCart(product, qty: 1); 
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>  CartScreen(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text('Buy Now'),
-                      ),
-                    ),
+                    
+                      ElevatedButton(
+  onPressed: () {
+    cartProvider.addToCart(product, qty: 1); 
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CartScreen(),
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    foregroundColor: Colors.white, 
+    backgroundColor: Colors.black, 
+    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12), 
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12), 
+    ),
+    textStyle: TextStyle(
+      fontSize: 16, 
+      fontWeight: FontWeight.w600, 
+    ),
+    elevation: 5, 
+  ),
+  child: const Text('Add To Cart'),
+)
+
+                     ,  ElevatedButton(
+  onPressed: () {
+    cartProvider.addToCart(product, qty: 1); 
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CheckoutScreen(),
+      ),
+    );
+  },
+  style: ElevatedButton.styleFrom(
+    foregroundColor: Colors.white, 
+    backgroundColor: Colors.black, // Text color
+    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12), // Padding
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16), // Button border radius
+    ),
+    textStyle: TextStyle(
+      fontSize: 18, // Text size
+      fontWeight: FontWeight.bold, // Text weight
+    ),
+  ),
+  child: const Text('Buy Now'),
+)
+
+                    
                   ],
                 ),
                 const SizedBox(height: 20),

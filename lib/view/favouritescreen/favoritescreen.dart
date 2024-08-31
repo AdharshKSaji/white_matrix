@@ -52,7 +52,7 @@ class FavoriteScreen extends StatelessWidget {
                       ),
                     ),
                     title: Text(product.title),
-                    subtitle: Text('₹${product.price}'),
+                    subtitle: Text('₹${product.originalPrice}'),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () {

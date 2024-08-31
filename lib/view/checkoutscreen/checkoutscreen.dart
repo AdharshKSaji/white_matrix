@@ -105,7 +105,7 @@ class CheckoutScreen extends StatelessWidget {
           child: ListTile(
             leading: Icon(Icons.shopping_cart, color: Colors.deepPurple),
             title: Text(cartItem.product.title),
-            subtitle: Text('\$${cartItem.product.price.toStringAsFixed(2)} x ${cartItem.quantity}'),
+            subtitle: Text('\$${cartItem.product.originalPrice.toStringAsFixed(2)} x ${cartItem.quantity}'),
             trailing: IconButton(
               icon: Icon(Icons.delete, color: Colors.red),
               onPressed: () {
@@ -255,7 +255,7 @@ class CheckoutScreen extends StatelessWidget {
     buffer.writeln('Pin Code: ${controller.pinCode}');
     buffer.writeln('');
     for (var item in controller.cartItems) {
-      buffer.writeln('${item.product.title.padRight(20)} \$${item.product.price.toStringAsFixed(2).padLeft(8)} x ${item.quantity}');
+      buffer.writeln('${item.product.title.padRight(20)} \$${item.product.originalPrice.toStringAsFixed(2).padLeft(8)} x ${item.quantity}');
     }
     buffer.writeln('------------------------------');
     buffer.writeln('Total: ${controller.totalPrice.toStringAsFixed(2)}');

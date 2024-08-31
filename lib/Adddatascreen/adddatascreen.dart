@@ -66,11 +66,12 @@ class _AddDataScreenState extends State<AddDataScreen> {
 
     try {
       await _collectionRef.add(ProductModel(
+        price: 0,
         title: _titleController.text,
         review: _reviewController.text,
         description: _descriptionController.text,
         image: _imageUrl!,
-        price: double.parse(_priceController.text),
+        originalPrice: double.parse(_priceController.text),
         seller: _sellerController.text,
         rate: double.parse(_rateController.text),
         quantity: int.parse(_quantityController.text),

@@ -8,7 +8,7 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final provider = Favoritecontroller.of(context);
+    
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -66,7 +66,7 @@ class ProductCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        "\₹${product.price}",
+                        "\₹${product.originalPrice}",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 17,

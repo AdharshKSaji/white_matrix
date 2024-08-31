@@ -12,7 +12,7 @@ class Checkoutbox extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = CartController.of(context);
     return Container(
-      height: 180,
+      height: 160,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,

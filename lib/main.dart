@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:white_matrix/controller/AuthController.dart';
 import 'package:white_matrix/controller/CheckoutController.dart';
+import 'package:white_matrix/controller/ScarchController.dart';
 import 'package:white_matrix/controller/cartcontroller.dart';
 import 'package:white_matrix/controller/favcontroller.dart';
 import 'package:white_matrix/controller/logincontroller.dart';
+import 'package:white_matrix/controller/offercontroller.dart';
 import 'package:white_matrix/controller/ordercontroller.dart';
 import 'package:white_matrix/firebase_options.dart';
 import 'package:white_matrix/view/splashscreen/splashscreen.dart';
@@ -17,6 +19,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  
   runApp(MyApp());
 }
 
@@ -41,7 +44,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => BookingController(),),
        ChangeNotifierProvider(create: (_) => CheckoutController()),
-       ChangeNotifierProvider(create: (_) => Authcontroller())
+       ChangeNotifierProvider(create: (_) => Authcontroller()),
+       ChangeNotifierProvider(create: (_) => ScratchController()),
+      
+          
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

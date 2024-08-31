@@ -21,7 +21,7 @@ class BookingController extends ChangeNotifier {
   }
 
   double totalPrice() {
-    return favorateslist.fold(0.0, (sum, item) => sum + item.price);
+    return favorateslist.fold(0.0, (sum, item) => sum + item.originalPrice);
   }
 
   static BookingController of(

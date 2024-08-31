@@ -10,7 +10,7 @@ class CheckoutController extends ChangeNotifier {
   
   List<CartModel> _cartItems = [];
   
-  // Getters for the controllers' text
+
   String get name => nameController.text;
   String get address => addressController.text;
   String get phoneNumber => phoneNumberController.text;
@@ -18,7 +18,6 @@ class CheckoutController extends ChangeNotifier {
   
   List<CartModel> get cartItems => _cartItems;
   
-  // Methods to update the controllers' text
   void updateName(String name) {
     nameController.text = name;
     notifyListeners();
@@ -39,7 +38,6 @@ class CheckoutController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Methods for cart operations
   void addItemToCart(CartModel item) {
     _cartItems.add(item);
     notifyListeners();
@@ -53,12 +51,11 @@ class CheckoutController extends ChangeNotifier {
   double get totalPrice {
     double total = 0.0;
     for (var item in _cartItems) {
-      total += item.product.price * item.quantity;
+      total += item.product.originalPrice * item.quantity;
     }
     return total;
   }
 
-  // Dispose controllers to prevent memory leaks
   @override
   void dispose() {
     nameController.dispose();

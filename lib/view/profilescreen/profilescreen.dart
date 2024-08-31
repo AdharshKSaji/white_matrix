@@ -37,8 +37,7 @@ class ProfileScreen extends StatelessWidget {
                 CircleAvatar(
                   radius: 50,
                   backgroundImage: NetworkImage(
-                    FirebaseAuth.instance.currentUser?.photoURL ??
-                        'https://www.example.com/default-profile.png',
+                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvMDrMZkoKYRVFkkf1MEGhMQ_tr_FXsdiaA4vqwBN-JAROIps-4tYh7I5HNwBNYBxT5Fg&usqp=CAU'
                   ),
                   backgroundColor: Colors.transparent,
                 ),
@@ -69,11 +68,11 @@ class ProfileScreen extends StatelessWidget {
             ),
             SizedBox(height: 20),
 
-            // Action Buttons
+    
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // Logout Button
+          
                 ElevatedButton(
                   onPressed: () async {
                     await FirebaseAuth.instance.signOut();
@@ -105,7 +104,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 
-                // Favorites Button
+               
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -133,7 +132,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 
-                // Cart Button
+          
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -165,7 +164,7 @@ class ProfileScreen extends StatelessWidget {
             
             SizedBox(height: 20),
             
-            // ADD PRODUCT Button
+           
             Center(
               child: ElevatedButton(
                 onPressed: () {

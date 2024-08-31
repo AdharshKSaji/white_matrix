@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:white_matrix/view/homescreen/homescreen.dart';
 import 'package:white_matrix/view/loginscreen/loginscreen.dart';
+import 'package:white_matrix/view/scarchscreen/scarchersceen.dart';
+
 
 
 
 
 class SplashScreen extends StatefulWidget {
+  
   SplashScreen({super.key, this.islogged = false});
   final bool islogged;
 
@@ -21,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>LoginScreen(),
+          builder: (context) =>ScratchScreen()
         ),
       );
     });

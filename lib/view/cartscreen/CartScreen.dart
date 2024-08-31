@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:white_matrix/constants/colorconstants.dart/colorconstants.dart';
 import 'package:white_matrix/controller/cartcontroller.dart';
 import 'package:white_matrix/view/cartscreen/checkoutbox.dart';
+import 'package:white_matrix/view/homescreen/homescreen.dart';
 
 class CartScreen extends StatefulWidget {
   CartScreen({super.key});
@@ -38,7 +39,8 @@ class _CartScreenState extends State<CartScreen> {
       appBar: AppBar(leading:  IconButton(
                       icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => 
+                        HomeScreen(),));
                       },),
         title: Text(
           " Cart",
@@ -94,7 +96,7 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              "\₹${cartItem.product.price.toStringAsFixed(2)}",
+                              "\₹${cartItem.product.originalPrice.toStringAsFixed(2)}",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

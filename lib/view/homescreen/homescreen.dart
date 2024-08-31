@@ -193,13 +193,13 @@ RichText(
 ),
                   SizedBox(height: 10),
                   SizedBox(
-                    height: 150, // Adjust height as needed
+                    height: 150,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: bigSaleImages.length,
                       itemBuilder: (context, index) {
                         return Container(
-                          width: 150, // Adjust width as needed
+                          width: 150, 
                           margin: EdgeInsets.only(right: 10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
@@ -214,7 +214,6 @@ RichText(
                   ),
                   SizedBox(height: 20),
 
-                  // Products Section
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -251,13 +250,14 @@ RichText(
                       var map = snapshot.data!.docs[index];
                       return ProductCard(
                         product: ProductModel(
+                          price: 0,
                           
                           title: map['title'],
                           description: map['description'],
                           image: map['image'],
                           review: map['review'],
                           seller: map['seller'],
-                          price: map['price'],
+                          originalPrice: map['price'],
                           rate: map['rate'],
                           quantity: map['quantity'],
                         ),

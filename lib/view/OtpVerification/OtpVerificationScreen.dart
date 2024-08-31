@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
-import 'package:scratcher/scratcher.dart';
 import 'package:white_matrix/controller/OtpVerficationController.dart';
-import 'package:white_matrix/view/homescreen/homescreen.dart';
+import 'package:white_matrix/view/scarchscreen/scarchersceen.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
   final String phoneNumber;
@@ -60,7 +59,7 @@ class OtpVerificationScreen extends StatelessWidget {
                         onCompleted: (pin) async {
                           await controller.verifyOtp(context);
                           if (controller.errorMessage.isEmpty) {
-                            _showScratchCardDialog(context);
+                            _showSuccessDialog(context);
                           }
                         },
                         defaultPinTheme: PinTheme(
@@ -121,7 +120,7 @@ class OtpVerificationScreen extends StatelessWidget {
                           onPressed: () async {
                             await controller.verifyOtp(context);
                             if (controller.errorMessage.isEmpty) {
-                              _showScratchCardDialog(context);
+                              _showSuccessDialog(context);
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -145,40 +144,33 @@ class OtpVerificationScreen extends StatelessWidget {
     );
   }
 
-  void _showScratchCardDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: SizedBox(
-            height: 200.0,
-            child: Scratcher(
-              brushSize: 50,
-              threshold: 50,
-              color: Colors.blueGrey,
-              onChange: (value) {
-                print("Scratch progress: $value%");
-              },
-              onThreshold: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                  (route) => false,
-                );
-              },
-              child: Container(
-                alignment: Alignment.center,
-                color: Colors.white,
-                child: const Text(
-                  "Congratulations!\nYou have Won RS 0 !",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ),
+ void _showSuccessDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+  
+      Future.delayed(Duration(seconds: 2), () {
+        
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => ScratchScreen()),
+          (route) => false,
         );
-      },
-    );
-  }
+      });
+
+      return AlertDialog(
+        content: SizedBox(
+          height: 200.0,
+          child: Center(
+            child: Image.asset('assets/images/undraw_welcome_cats_thqn.jpg'),
+          ),
+        ),
+      );
+    },
+  );
 }
+
+    
+    
+  }
+
