@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:white_matrix/model/productmodel.dart';
@@ -7,20 +8,16 @@ class CartController extends ChangeNotifier {
   final List<CartModel> _cartList = [];
   List<CartModel> get cart => _cartList;
 
-  void addToCart(ProductModel product, {required int qty}) {
-    // Check if the product is already in the cart
-    final cartItemIndex = _cartList.indexWhere(
-      (item) => item.product.title == product.title,
+  void addToCart(ProductModel product, {required int qty, bool isScratched = false}) {
+   
+    final newCartItem = CartModel(
+      product: product,
+      qty: qty,
+      price: isScratched ? 0.0 : product.originalPrice, 
     );
 
-    if (cartItemIndex != -1) {
-      // If product is already in cart, we do not add more
-      // Ensure the quantity remains 1
-      _cartList[cartItemIndex].qty = 1;
-    } else {
-      // Add new product with quantity 1
-      _cartList.add(CartModel(product: product, qty: 1));
-    }
+  
+    _cartList.add(newCartItem);
 
     notifyListeners();
   }
@@ -46,7 +43,7 @@ class CartController extends ChangeNotifier {
   double totalPrice() {
     return _cartList.fold(
       0.0,
-      (total, item) => total + (item.product.originalPrice * item.qty),
+      (total, item) => total + (item.totalPrice),
     );
   }
 
@@ -54,3 +51,4 @@ class CartController extends ChangeNotifier {
     return Provider.of<CartController>(context, listen: listen);
   }
 }
+

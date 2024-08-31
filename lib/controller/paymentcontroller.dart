@@ -19,7 +19,7 @@ class PaymentController {
       'retry': {'enabled': true, 'max_count': 1},
       'send_sms_hash': true,
       'prefill': {
-        'contact': '919562106384',
+        'contact': '',
         'email': 'adharshksaji001@com',
         'place': 'Kochi, Kerala'
       },

@@ -126,7 +126,7 @@ class _AddDataScreenState extends State<AddDataScreen> {
   }
 
   Future<void> _pickImage() async {
-    // Request storage permission
+
     final status = await Permission.storage.request();
     if (status != PermissionStatus.granted) {
       ScaffoldMessenger.of(context).showSnackBar(

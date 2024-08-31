@@ -1,13 +1,17 @@
-import 'package:white_matrix/model/productmodel.dart';
 
+import 'package:white_matrix/model/productmodel.dart';
 
 class CartModel {
   ProductModel product;
-  
   int qty;
-  CartModel({required this.product, this.qty = 1});
+  double price;
 
-  get quantity => null;
+  CartModel({
+    required this.product,
+    this.qty = 1,
+    required this.price,
+  });
 
-  num? get totalPrice => null;
+  int get quantity => qty;
+  double get totalPrice => price * qty;
 }

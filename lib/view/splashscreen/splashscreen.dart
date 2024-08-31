@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:white_matrix/view/loginscreen/loginscreen.dart';
-import 'package:white_matrix/view/scarchscreen/scarchersceen.dart';
+
 
 
 
@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>ScratchScreen()
+          builder: (context) =>LoginScreen()
         ),
       );
     });

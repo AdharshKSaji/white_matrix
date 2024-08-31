@@ -8,7 +8,6 @@ import 'package:white_matrix/controller/ScarchController.dart';
 import 'package:white_matrix/controller/cartcontroller.dart';
 import 'package:white_matrix/controller/favcontroller.dart';
 import 'package:white_matrix/controller/logincontroller.dart';
-import 'package:white_matrix/controller/offercontroller.dart';
 import 'package:white_matrix/controller/ordercontroller.dart';
 import 'package:white_matrix/firebase_options.dart';
 import 'package:white_matrix/view/splashscreen/splashscreen.dart';

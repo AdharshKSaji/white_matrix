@@ -14,7 +14,7 @@ class ProductDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final favoriteProvider = Provider.of<FavoriteController>(context);
-    final cartProvider = Provider.of<CartController>(context); // Corrected typo
+    final cartProvider = Provider.of<CartController>(context); 
 
     return Scaffold(
       body: Stack(
@@ -156,20 +156,18 @@ class ProductDetailScreen extends StatelessWidget {
   },
   style: ElevatedButton.styleFrom(
     foregroundColor: Colors.white, 
-    backgroundColor: Colors.black, // Text color
-    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12), // Padding
+    backgroundColor: Colors.black, 
+    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12), 
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(16), // Button border radius
+      borderRadius: BorderRadius.circular(16), 
     ),
     textStyle: TextStyle(
-      fontSize: 18, // Text size
-      fontWeight: FontWeight.bold, // Text weight
+      fontSize: 18, 
+      fontWeight: FontWeight.bold,
     ),
   ),
   child: const Text('Buy Now'),
-)
-
-                    
+)      
                   ],
                 ),
                 const SizedBox(height: 20),

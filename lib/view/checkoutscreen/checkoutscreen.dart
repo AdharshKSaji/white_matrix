@@ -158,12 +158,10 @@ class CheckoutScreen extends StatelessWidget {
     final invoiceContent = _generateInvoiceContent(controller);
     final pdfFile = await _createPdf(invoiceContent);
 
-    // Save the file to the device's storage
     final downloadsDirectory = await getExternalStorageDirectory();
     final filePath = '${downloadsDirectory!.path}/invoice_${DateTime.now().millisecondsSinceEpoch}.pdf';
     await pdfFile.copy(filePath);
 
-    // Display a dialog with share, print, and open options
     await showDialog(
       context: context,
       builder: (context) {
