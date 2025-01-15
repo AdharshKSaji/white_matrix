@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.0.2'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21'
+    }
+}
 allprojects {
     repositories {
         google()
@@ -5,14 +15,20 @@ allprojects {
     }
 }
 
+
 rootProject.buildDir = "../build"
+
 subprojects {
+    // Define the build directory for each subproject
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
 subprojects {
+    // Ensure the ':app' project is evaluated before others
     project.evaluationDependsOn(":app")
 }
 
+// Task to clean the build directory
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }

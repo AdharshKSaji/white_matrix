@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:white_matrix/Adddatascreen/adddatascreen.dart';
 import 'package:white_matrix/view/favouritescreen/favoritescreen.dart';
 import 'package:white_matrix/view/loginscreen/loginscreen.dart';
-import 'package:white_matrix/view/cartscreen/cartscreen.dart'; 
+import 'package:white_matrix/view/cartscreen/cartscreen.dart';
+import 'package:white_matrix/view/splashscreen/splashscreen.dart'; 
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -79,7 +80,7 @@ class ProfileScreen extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
+                        builder: (context) =>SignInScreen(),
                       ),
                       (route) => false,
                     );

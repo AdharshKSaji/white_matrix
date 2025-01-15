@@ -1,176 +1,109 @@
+
 import 'package:flutter/material.dart';
-import 'package:pinput/pinput.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:white_matrix/controller/OtpVerficationController.dart';
-import 'package:white_matrix/view/scarchscreen/scarchersceen.dart';
+import 'package:white_matrix/view/splashscreen/splashscreen.dart';
 
-class OtpVerificationScreen extends StatelessWidget {
-  final String phoneNumber;
+class SignUpController extends ChangeNotifier {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  const OtpVerificationScreen({
-    super.key,
-    required this.phoneNumber,
-  });
+  Future<void> signUp(BuildContext context, String email, String password) async {
+    try {
+      await _auth.createUserWithEmailAndPassword(email: email.trim(), password: password.trim());
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Successfully signed up!")),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${e.toString()}")),
+      );
+    }
+  }
+}
+
+class SignUpScreen extends StatelessWidget {
+  SignUpScreen({Key? key}) : super(key: key);
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) {
-        final controller = OtpVerificationController();
-        
-        return controller;
-      },
-      child: Consumer<OtpVerificationController>(
-        builder: (context, controller, child) {
-          return Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      Image.asset(
-                        "assets/images/undraw_verified_re_4io7.jpg",
-                        height: 150,
-                      ),
-                      const SizedBox(height: 20.0),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "OTP Verification",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      const SizedBox(height: 10.0),
-                      Text(
-                        "Enter the verification code we just sent to your number $phoneNumber",
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                      const SizedBox(height: 20.0),
-                      Pinput(
-                        length: 6,
-                        controller: controller.otpController,
-                        onChanged: controller.updateOtp,
-                        onCompleted: (pin) async {
-                          await controller.verifyOtp(context);
-                          if (controller.errorMessage.isEmpty) {
-                            _showSuccessDialog(context);
-                          }
-                        },
-                        defaultPinTheme: PinTheme(
-                          width: 56,
-                          height: 56,
-                          textStyle: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(color: Colors.grey),
-                          ),
-                        ),
-                        errorPinTheme: PinTheme(
-                          decoration: BoxDecoration(
-                            color: Colors.red.shade100,
-                            borderRadius: BorderRadius.circular(10.0),
-                            border: Border.all(color: Colors.red),
-                          ),
-                        ),
-                      ),
-                      if (controller.errorMessage.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            controller.errorMessage,
-                            style: const TextStyle(color: Colors.red),
-                          ),
-                        ),
-                      const SizedBox(height: 16.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Don't get OTP? ",
-                            style: TextStyle(fontSize: 14),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              controller.resendOtp(phoneNumber);
-                            },
-                            child: const Text(
-                              "Resend",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16.0),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller.verifyOtp(context);
-                            if (controller.errorMessage.isEmpty) {
-                              _showSuccessDialog(context);
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          ),
-                          child: const Text(
-                            'Verify',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+      create: (_) => SignUpController(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Sign Up"),
+          centerTitle: true,
+        ),
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color.fromARGB(255, 233, 169, 72), Color.fromARGB(255, 235, 122, 114)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-          );
-        },
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Sign Up",
+                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                const SizedBox(height: 30),
+                _buildTextField("Email", _emailController),
+                const SizedBox(height: 15),
+                _buildTextField("Password", _passwordController, obscureText: true),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.red, padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15), backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                  ),
+                  onPressed: () {
+                    final provider = Provider.of<SignUpController>(context, listen: false);
+                    provider.signUp(context, _emailController.text, _passwordController.text);
+                  },
+                  child: const Text("Sign Up", style: TextStyle(fontSize: 18)),
+                ),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SignInScreen()),
+                    );
+                  },
+                  child: const Text(
+                    "Already have an account? Sign In",
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 
- void _showSuccessDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-  
-      Future.delayed(Duration(seconds: 2), () {
-        
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => ScratchScreen()),
-          (route) => false,
-        );
-      });
-
-      return AlertDialog(
-        content: SizedBox(
-          height: 200.0,
-          child: Center(
-            child: Image.asset('assets/images/undraw_welcome_cats_thqn.jpg'),
-          ),
+  Widget _buildTextField(String hint, TextEditingController controller, {bool obscureText = false}) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        hintText: hint,
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide.none,
         ),
-      );
-    },
-  );
-}
-
-    
-    
+      ),
+      obscureText: obscureText,
+    );
   }
+}
 

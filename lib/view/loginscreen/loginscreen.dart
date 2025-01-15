@@ -1,107 +1,113 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:white_matrix/controller/logincontroller.dart';
+// import 'package:ewaste/View/Home/Home.dart';
+// import 'package:ewaste/View/SignUP/Signup.dart';
+// import 'package:flutter/material.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:provider/provider.dart';
 
 
-class LoginScreen extends StatelessWidget {
-  final LoginController _controller = LoginController();
+// class AuthController extends ChangeNotifier {
+//   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Form(
-            key: _controller.formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  "assets/images/undraw_mobile_login_re_9ntv.jpg",
-                  height: 150,
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Enter your phone number',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                SizedBox(height: 30),
-                TextFormField(
-                  controller: _controller.phoneNumberController,
-                  decoration: InputDecoration(
-                    labelText: 'Enter your phone number',
-                    hintText: '',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
-                    }
-                    if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                      return 'Please enter a valid 10-digit phone number';
-                    }
-                    return null;
-                  },
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                ),
-                SizedBox(height: 20),
-                RichText(
-                  text: const TextSpan(
-                    text: 'By continuing, I agree to  ',
-                    style: TextStyle(color: Colors.black),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'terms and conditions',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' and ',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      TextSpan(
-                        text: 'privacy policy',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () => _controller.sendOtp(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    ),
-                    child: const Text(
-                      'Get OTP',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   Future<void> signIn(String email, String password, BuildContext context) async {
+//     try {
+//       await _auth.signInWithEmailAndPassword(email: email, password: password);
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         const SnackBar(content: Text("Successfully signed in!")),
+//       );
+//        Navigator.push(context, 
+//                   MaterialPageRoute(builder: (context) => HomeScreen()));
+//     } catch (e) {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text("Error: ${e.toString()}")),
+//       );
+//     }
+//   }
+// }
+
+// class SignInScreen extends StatelessWidget {
+//   const SignInScreen({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final authProvider = Provider.of<AuthController>(context, listen: false);
+//     final _emailController = TextEditingController();
+//     final _passwordController = TextEditingController();
+
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text("Sign In"),
+//         centerTitle: true,
+//       ),
+//       body: Container(
+//         decoration: const BoxDecoration(
+//           gradient: LinearGradient(
+//             colors: [Color.fromARGB(255, 233, 169, 72), Color.fromARGB(255, 235, 122, 114)],
+//             begin: Alignment.topLeft,
+//             end: Alignment.bottomRight,
+//           ),
+//         ),
+//         child: Padding(
+//           padding: const EdgeInsets.all(20.0),
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               const Text(
+//                 "Sign In",
+//                 style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.white),
+//               ),
+//               const SizedBox(height: 30),
+//               _buildTextField("Email", _emailController),
+//               const SizedBox(height: 15),
+//               _buildTextField("Password", _passwordController, obscureText: true),
+//               const SizedBox(height: 30),
+//               ElevatedButton(
+//                 style: ElevatedButton.styleFrom(
+//                   foregroundColor: Colors.blue,
+//                   padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+//                   backgroundColor: Colors.white,
+//                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+//                 ),
+//                 onPressed: () {
+//                   authProvider.signIn(
+//                     _emailController.text.trim(),
+//                     _passwordController.text.trim(),
+//                     context,
+//                   );
+//                 },
+//                 child: const Text("Sign In", style: TextStyle(fontSize: 18)),
+//               ),
+//               const SizedBox(height: 20),
+//               TextButton(
+//                 onPressed: () {
+//                   Navigator.push(context, 
+//                   MaterialPageRoute(builder: (context) => SignUpScreen(),));
+//                 },
+//                 child: const Text(
+//                   "Don't have an account? Sign Up",
+//                   style: TextStyle(color: Colors.white, fontSize: 16),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Widget _buildTextField(String hint, TextEditingController controller, {bool obscureText = false}) {
+//     return TextField(
+//       controller: controller,
+//       decoration: InputDecoration(
+//         hintText: hint,
+//         filled: true,
+//         fillColor: Colors.white,
+//         border: OutlineInputBorder(
+//           borderRadius: BorderRadius.circular(30),
+//           borderSide: BorderSide.none,
+//         ),
+//       ),
+//       obscureText: obscureText,
+//     );
+//   }
+// }
+
